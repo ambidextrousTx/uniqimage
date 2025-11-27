@@ -1,6 +1,6 @@
 import argparse
 from pathlib import Path
-from duplicatefinder import compute_image_hashes
+from duplicatefinder import compute_image_hashes, find_duplicates
 
 
 def is_image_file(path):
@@ -31,7 +31,8 @@ def main():
     image_files = [f for f in target_directory.rglob('*') if is_image_file(f)]
     print(f'Found {len(image_files)} files')
 
-    hashes = compute_image_hashes(image_files)
+    hashes_to_paths = compute_image_hashes(image_files)
+    find_duplicates(hashes_to_paths)
 
 
 if __name__ == "__main__":
