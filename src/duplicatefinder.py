@@ -30,3 +30,4 @@ def find_duplicates(hashes_to_paths):
     duplicates = {image_hash: image_paths for image_hash, image_paths in hashes_to_paths.items() if len(image_paths) > 1}
     print(f'Found {len(duplicates)}')
     print(duplicates)
+    return duplicates

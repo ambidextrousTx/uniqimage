@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 from duplicatefinder import compute_image_hashes, find_duplicates
-
+from imageutils import get_image_info
 
 def is_image_file(path):
     return path.suffix.lower() in {'.jpg', '.jpeg', '.png'}
@@ -32,7 +32,18 @@ def main():
     print(f'Found {len(image_files)} files')
 
     hashes_to_paths = compute_image_hashes(image_files)
-    find_duplicates(hashes_to_paths)
+    duplicates = find_duplicates(hashes_to_paths)
+
+    if not duplicates:
+        print(f'No duplicates found')
+        return
+    
+    print(f'Found {len(duplicates)} duplicate groups:')
+    for count, (image_hash, duplicate_paths) in enumerate(duplicates.items(), start=1):
+        image_info = get_image_info(duplicate_paths)
+        print(f'Group {count}:')
+        for path, width, height in image_info:
+            print(f'    {path} -> {width} x {height}')
 
 
 if __name__ == "__main__":
