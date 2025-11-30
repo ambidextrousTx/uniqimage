@@ -2,24 +2,12 @@ import argparse
 from pathlib import Path
 from duplicatefinder import compute_image_hashes, find_duplicates
 from imageutils import get_image_info
-
-def is_image_file(path):
-    return path.suffix.lower() in {'.jpg', '.jpeg', '.png'}
-
-
-def can_scan_folder(folder):
-    if not folder.exists():
-        print(f"Error: Folder '{folder}' does not exist")
-        return False
-    if not folder.is_dir():
-        print(f"Error: '{folder}' is not a directory")
-        return False
-    return True
+from utils import is_image_file, can_scan_folder
 
 
 def main():
     parser = argparse.ArgumentParser(
-            description='Identify duplicate images in a folder')
+        description='Identify duplicate images in a folder')
     parser.add_argument('folder', type=str, help='the target folder')
     args = parser.parse_args()
     input_folder = args.folder
@@ -37,7 +25,7 @@ def main():
     if not duplicates:
         print(f'No duplicates found')
         return
-    
+
     print(f'Found {len(duplicates)} duplicate groups:')
     for count, (image_hash, duplicate_paths) in enumerate(duplicates.items(), start=1):
         image_info = get_image_info(duplicate_paths)
