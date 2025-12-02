@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 from duplicatefinder import compute_image_hashes, find_duplicates
-from imageutils import get_image_info
+from imageutils import get_image_info, show_duplicates
 from utils import is_image_file, can_scan_folder
 
 
@@ -32,6 +32,8 @@ def main():
         print(f'Group {count}:')
         for path, width, height in image_info:
             print(f'    {path} -> {width} x {height}')
+
+        show_duplicates(duplicates)
 
 
 if __name__ == "__main__":
