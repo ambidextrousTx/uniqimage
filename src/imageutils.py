@@ -1,5 +1,8 @@
 from PIL import Image, ImageTk
 import tkinter as tk
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def show_duplicates(duplicates):
@@ -39,7 +42,7 @@ def show_duplicates(duplicates):
                 image_label.image = photo
                 image_label.pack()
             except Exception as e:
-                print("Could not load image", e)
+                logger.error("Could not load image", e)
 
             info_label = tk.Label(img_frame, text=f"{path.name}\n{width}x{height}")
             info_label.pack()
@@ -59,6 +62,6 @@ def get_image_info(image_paths):
             width, height = image.size
             image_info.append((image_path, width, height))
         except Exception as e:
-            print("Error reading image {}: {}".format(image_path, e))
+            logger.error("Error reading image {}: {}".format(image_path, e))
 
     return image_info
