@@ -67,7 +67,6 @@ def show_duplicates(duplicates):
     root.mainloop()
 
 
-
 def get_image_info(image_paths):
     # [(Path('img1.jpg'), 1920, 1080), (Path('img2.jpg'), 800, 600)]
     image_info = []

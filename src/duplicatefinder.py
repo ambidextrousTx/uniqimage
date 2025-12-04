@@ -1,4 +1,5 @@
 from PIL import Image
+from tqdm import tqdm
 import imagehash
 import logging
 
@@ -10,7 +11,7 @@ def compute_image_hashes(image_paths):
     logger.info(f"Computing hashes for {len(image_paths)} images...")
     count = 0
 
-    for image_path in image_paths:
+    for image_path in tqdm(image_paths, desc="Computing image hashes", colour="green"):
         count += 1
         logger.info(f"Processed {count}/{len(image_paths)}")
         try:
