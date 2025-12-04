@@ -51,9 +51,9 @@ def show_duplicates(duplicates):
                 image_label = tk.Label(img_frame, image=photo)
                 image_label.image = photo
                 image_label.pack()
-                copy_btn = tk.Button(img_frame, text="Copy Path", command=lambda: append_path_to_clipboard(root, path))
+                copy_btn = tk.Button(img_frame, text="Copy Path", command=lambda p=path: append_path_to_clipboard(root, p))
                 copy_btn.pack()
-                reveal_in_finder_btn = tk.Button(img_frame, text="Reveal in Finder", command=lambda:reveal_in_finder(path))
+                reveal_in_finder_btn = tk.Button(img_frame, text="Reveal in Finder", command=lambda p=path:reveal_in_finder(p))
                 reveal_in_finder_btn.pack()
             except Exception as e:
                 logger.error("Could not load image", e)
