@@ -1,5 +1,6 @@
 from PIL import Image, ImageTk
 import tkinter as tk
+import subprocess
 import logging
 
 logger = logging.getLogger(__name__)
@@ -8,6 +9,10 @@ logger = logging.getLogger(__name__)
 def append_path_to_clipboard(root, path):
     root.clipboard_clear()
     root.clipboard_append(path.name)
+
+
+def reveal_in_finder(path):
+    subprocess.run(["open", "-R", str(path)])
 
 
 def show_duplicates(duplicates):
@@ -48,6 +53,8 @@ def show_duplicates(duplicates):
                 image_label.pack()
                 copy_btn = tk.Button(img_frame, text="Copy Path", command=lambda: append_path_to_clipboard(root, path))
                 copy_btn.pack()
+                reveal_in_finder_btn = tk.Button(img_frame, text="Reveal in Finder", command=lambda:reveal_in_finder(path))
+                reveal_in_finder_btn.pack()
             except Exception as e:
                 logger.error("Could not load image", e)
 
