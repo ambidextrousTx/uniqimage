@@ -5,6 +5,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def append_path_to_clipboard(root, path):
+    root.clipboard_clear()
+    root.clipboard_append(path.name)
+
+
 def show_duplicates(duplicates):
     root = tk.Tk()
     root.title("Duplicates Found")
@@ -41,6 +46,8 @@ def show_duplicates(duplicates):
                 image_label = tk.Label(img_frame, image=photo)
                 image_label.image = photo
                 image_label.pack()
+                copy_btn = tk.Button(img_frame, text="Copy Path", command=lambda: append_path_to_clipboard(root, path))
+                copy_btn.pack()
             except Exception as e:
                 logger.error("Could not load image", e)
 
@@ -51,6 +58,7 @@ def show_duplicates(duplicates):
     scrollbar.pack(side="right", fill="y")
 
     root.mainloop()
+
 
 
 def get_image_info(image_paths):
