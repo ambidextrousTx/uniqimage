@@ -1,7 +1,7 @@
 import argparse
 import logging
 from pathlib import Path
-from duplicatefinder import compute_image_hashes, find_duplicates
+from duplicatefinder import compute_image_hashes_concurrently, find_duplicates
 from imageutils import get_image_info, show_duplicates
 from utils import is_image_file, can_scan_folder
 
@@ -26,7 +26,7 @@ def main():
     image_files = [f for f in target_directory.rglob('*') if is_image_file(f)]
     logger.info(f'Found {len(image_files)} files')
 
-    hashes_to_paths = compute_image_hashes(image_files)
+    hashes_to_paths = compute_image_hashes_concurrently(image_files)
     duplicates = find_duplicates(hashes_to_paths)
 
     if not duplicates:
