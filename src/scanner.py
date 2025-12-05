@@ -1,7 +1,8 @@
 import argparse
 import logging
+import time
 from pathlib import Path
-from duplicatefinder import compute_image_hashes_concurrently, find_duplicates
+from duplicatefinder import compute_image_hashes, compute_image_hashes_concurrently, find_duplicates
 from imageutils import get_image_info, show_duplicates
 from utils import is_image_file, can_scan_folder
 
@@ -9,10 +10,12 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    start_time = time.time()
     parser = argparse.ArgumentParser(
         description='Identify duplicate images in a folder')
     parser.add_argument('folder', type=str, help='the target folder')
-    parser.add_argument('--verbose', '-v', action='store_true')
+    parser.add_argument('--verbose', '-v', action='store_true', help='increase output verbosity')
+    parser.add_argument('--sequential', '-s', action='store_true', help='use sequential processing instead of the default concurrency')
     args = parser.parse_args()
 
     set_up_logging(args)
@@ -26,8 +29,13 @@ def main():
     image_files = [f for f in target_directory.rglob('*') if is_image_file(f)]
     logger.info(f'Found {len(image_files)} files')
 
-    hashes_to_paths = compute_image_hashes_concurrently(image_files)
+    if args.sequential:
+        hashes_to_paths = compute_image_hashes(image_files)
+    else:
+        hashes_to_paths = compute_image_hashes_concurrently(image_files)
     duplicates = find_duplicates(hashes_to_paths)
+    elapsed = time.time() - start_time
+    logger.warning(f"Hash computation took {elapsed:.2f} seconds")
 
     if not duplicates:
         logger.warning(f'No duplicates found')

@@ -32,7 +32,8 @@ def compute_image_hashes_concurrently(image_paths):
         # multiprocessing workers are completing because it processes
         # results as they complete
         futures = {executor.submit(compute_image_hash, path): path for path in image_paths}
-        for future in tqdm(as_completed(futures), total=len(image_paths), desc="Computing hashes"):
+        for future in tqdm(as_completed(futures), total=len(image_paths),
+                           desc="Computing image hashes concurrently", colour="green"):
             image_path, image_hash = future.result()
             if image_hash is not None:
                 if image_hash not in hashes_to_paths:
@@ -42,13 +43,12 @@ def compute_image_hashes_concurrently(image_paths):
     return hashes_to_paths
 
 
-@DeprecationWarning
 def compute_image_hashes(image_paths):
     hashes_to_paths = {}
     logger.info(f"Computing hashes for {len(image_paths)} images...")
     count = 0
 
-    for image_path in tqdm(image_paths, desc="Computing image hashes", colour="green"):
+    for image_path in tqdm(image_paths, desc="Computing image hashes sequentially", colour="green"):
         count += 1
         logger.info(f"Processed {count}/{len(image_paths)}")
         try:
