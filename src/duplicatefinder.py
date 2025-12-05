@@ -17,7 +17,7 @@ def compute_image_hash(image_path):
         return image_path, None
 
 
-def compute_image_hashes_concurrently(image_paths):
+def compute_image_hashes_concurrently(image_paths, verbose=False):
     hashes_to_paths = {}
     logger.info(f"Computing hashes for {len(image_paths)} images...")
 
@@ -33,7 +33,9 @@ def compute_image_hashes_concurrently(image_paths):
         # results as they complete
         futures = {executor.submit(compute_image_hash, path): path for path in image_paths}
         for future in tqdm(as_completed(futures), total=len(image_paths),
-                           desc="Computing image hashes concurrently", colour="green"):
+                           desc="Computing image hashes concurrently",
+                           colour="green",
+                           disable=verbose):
             image_path, image_hash = future.result()
             if image_hash is not None:
                 if image_hash not in hashes_to_paths:
@@ -43,12 +45,13 @@ def compute_image_hashes_concurrently(image_paths):
     return hashes_to_paths
 
 
-def compute_image_hashes(image_paths):
+def compute_image_hashes(image_paths, verbose=False):
     hashes_to_paths = {}
     logger.info(f"Computing hashes for {len(image_paths)} images...")
     count = 0
 
-    for image_path in tqdm(image_paths, desc="Computing image hashes sequentially", colour="green"):
+    for image_path in tqdm(image_paths, desc="Computing image hashes sequentially",
+                           colour="green", disable=verbose):
         count += 1
         logger.info(f"Processed {count}/{len(image_paths)}")
         try:

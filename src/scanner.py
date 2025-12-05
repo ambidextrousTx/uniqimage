@@ -30,9 +30,9 @@ def main():
     logger.info(f'Found {len(image_files)} files')
 
     if args.sequential:
-        hashes_to_paths = compute_image_hashes(image_files)
+        hashes_to_paths = compute_image_hashes(image_files, verbose=args.verbose)
     else:
-        hashes_to_paths = compute_image_hashes_concurrently(image_files)
+        hashes_to_paths = compute_image_hashes_concurrently(image_files, verbose=args.verbose)
     duplicates = find_duplicates(hashes_to_paths)
     elapsed = time.time() - start_time
     logger.warning(f"Hash computation took {elapsed:.2f} seconds")
