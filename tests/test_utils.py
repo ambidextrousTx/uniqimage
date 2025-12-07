@@ -1,5 +1,6 @@
+import tempfile
 from pathlib import Path
-from utils import is_image_file
+from utils import is_image_file, can_scan_folder
 
 
 def test_can_read_jpg():
@@ -20,3 +21,18 @@ def test_is_image_file_case_insensitive():
 def test_is_image_file_rejects_non_images():
     path = Path('test_fixtures/image.txt')
     assert not is_image_file(path)
+
+
+def test_can_scan_folder_valid_directory():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        assert can_scan_folder(Path(tmpdir))
+
+
+def test_can_scan_folder_nonexistent():
+    assert not can_scan_folder(Path('/this/does/not/exist'))
+
+
+def test_can_scan_folder_file_not_directory():
+    with tempfile.NamedTemporaryFile('r+') as tmpfile:
+        assert not can_scan_folder(Path(tmpfile.name))
+    pass
