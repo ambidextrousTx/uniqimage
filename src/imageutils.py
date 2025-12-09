@@ -67,13 +67,18 @@ def show_duplicates(duplicates):
     root.mainloop()
 
 
+def extract_image_dimensions(image):
+    width, height = image.size
+    return width, height
+
+
 def get_image_info(image_paths):
     # [(Path('img1.jpg'), 1920, 1080), (Path('img2.jpg'), 800, 600)]
     image_info = []
     for image_path in image_paths:
         try:
             image = Image.open(image_path)
-            width, height = image.size
+            width, height = extract_image_dimensions(image)
             image_info.append((image_path, width, height))
         except Exception as e:
             logger.error("Error reading image {}: {}".format(image_path, e))

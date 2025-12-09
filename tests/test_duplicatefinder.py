@@ -1,4 +1,6 @@
-from duplicatefinder import find_duplicates
+from duplicatefinder import find_duplicates, compute_individual_image_hash
+from PIL import Image
+import imagehash
 
 
 def test_find_duplicates_when_duplicates_exist():
@@ -56,3 +58,29 @@ def test_find_duplicates_many_in_one_group():
 
     duplicates = find_duplicates(hashes_to_paths)
     assert len(duplicates['123']) == 100
+
+
+def test_hash_function_returns_imagehash():
+    img = Image.new('RGB', (100, 100), color='red')
+    result = compute_individual_image_hash(img)
+    assert isinstance(result, imagehash.ImageHash)
+
+
+def test_hash_function_identical_images_return_same_hash():
+    img1 = Image.new('RGB', (100, 100), color='blue')
+    img2 = Image.new('RGB', (100, 100), color='blue')
+
+    hash1 = compute_individual_image_hash(img1)
+    hash2 = compute_individual_image_hash(img2)
+
+    assert hash1 == hash2
+
+
+def test_hash_function_different_images_return_different_hash():
+    img1 = Image.open('tests/test_fixtures/image1.png')
+    img2 = Image.open('tests/test_fixtures/image2.jpg')
+
+    hash1 = compute_individual_image_hash(img1)
+    hash2 = compute_individual_image_hash(img2)
+
+    assert not hash1 == hash2

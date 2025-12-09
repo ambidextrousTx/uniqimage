@@ -10,11 +10,15 @@ logger = logging.getLogger(__name__)
 def compute_image_hash(image_path):
     try:
         image = Image.open(image_path)
-        image_hash = imagehash.average_hash(image)
+        image_hash = compute_individual_image_hash(image)
         return image_path, image_hash
     except Exception as e:
         logger.error(f"Could not compute image hash for %s".format(image_path))
         return image_path, None
+
+
+def compute_individual_image_hash(image):
+    return imagehash.average_hash(image)
 
 
 def compute_image_hashes_concurrently(image_paths, verbose=False):
