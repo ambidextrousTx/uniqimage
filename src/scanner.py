@@ -52,7 +52,7 @@ def main():
 
 
 def set_up_logging(args):
-    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.WARNING)
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
     logging.getLogger('PIL').setLevel(logging.WARNING)
 
 
