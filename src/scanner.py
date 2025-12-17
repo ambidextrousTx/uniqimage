@@ -2,7 +2,9 @@ import argparse
 import logging
 import time
 from pathlib import Path
-from duplicatefinder import compute_image_hashes, compute_image_hashes_concurrently, find_duplicates
+from duplicatefinder import (compute_image_hashes,
+                             compute_image_hashes_concurrently,
+                             find_duplicates)
 from imageutils import get_image_info, show_duplicates
 from utils import is_image_file, can_scan_folder
 
@@ -14,8 +16,10 @@ def main():
     parser = argparse.ArgumentParser(
         description='Identify duplicate images in a folder')
     parser.add_argument('folder', type=str, help='the target folder')
-    parser.add_argument('--verbose', '-v', action='store_true', help='increase output verbosity')
-    parser.add_argument('--sequential', '-s', action='store_true', help='use sequential processing instead of the default concurrency')
+    parser.add_argument('--verbose', '-v', action='store_true',
+                        help='increase output verbosity')
+    parser.add_argument('--sequential', '-s', action='store_true',
+                        help='use sequential processing')
     args = parser.parse_args()
 
     set_up_logging(args)
@@ -30,9 +34,12 @@ def main():
     logger.info(f'Found {len(image_files)} files')
 
     if args.sequential:
-        hashes_to_paths = compute_image_hashes(image_files, verbose=args.verbose)
+        hashes_to_paths = compute_image_hashes(image_files,
+                                               verbose=args.verbose)
     else:
-        hashes_to_paths = compute_image_hashes_concurrently(image_files, verbose=args.verbose)
+        hashes_to_paths = (
+            compute_image_hashes_concurrently(image_files,
+                                              verbose=args.verbose))
     duplicates = find_duplicates(hashes_to_paths)
     elapsed = time.time() - start_time
     logger.warning(f"Hash computation took {elapsed:.2f} seconds")
@@ -42,7 +49,8 @@ def main():
         return
 
     logger.info(f'Found {len(duplicates)} duplicate groups:')
-    for count, (image_hash, duplicate_paths) in enumerate(duplicates.items(), start=1):
+    for count, (image_hash, duplicate_paths) in enumerate(duplicates.items(),
+                                                          start=1):
         image_info = get_image_info(duplicate_paths)
         logger.debug(f'Group {count}:')
         for path, width, height in image_info:

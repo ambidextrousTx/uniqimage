@@ -35,7 +35,8 @@ def compute_image_hashes_concurrently(image_paths, verbose=False):
         # This approach is meant to show a progress bar even as the
         # multiprocessing workers are completing because it processes
         # results as they complete
-        futures = {executor.submit(compute_image_hash, path): path for path in image_paths}
+        futures = {executor.submit(compute_image_hash, path): path for
+                   path in image_paths}
         for future in tqdm(as_completed(futures), total=len(image_paths),
                            desc="Computing image hashes concurrently",
                            colour="green",
@@ -54,7 +55,8 @@ def compute_image_hashes(image_paths, verbose=False):
     logger.info(f"Computing hashes for {len(image_paths)} images...")
     count = 0
 
-    for image_path in tqdm(image_paths, desc="Computing image hashes sequentially",
+    for image_path in tqdm(image_paths, desc="Computing image hashes "
+                                             "sequentially",
                            colour="green", disable=verbose):
         count += 1
         logger.info(f"Processed {count}/{len(image_paths)}")
@@ -75,7 +77,8 @@ def compute_image_hashes(image_paths, verbose=False):
 
 
 def find_duplicates(hashes_to_paths):
-    duplicates = {image_hash: image_paths for image_hash, image_paths in hashes_to_paths.items() if len(image_paths) > 1}
+    duplicates = {image_hash: image_paths for image_hash, image_paths
+                  in hashes_to_paths.items() if len(image_paths) > 1}
     logger.info(f'Found {len(duplicates)}')
     logger.info(duplicates)
     return duplicates

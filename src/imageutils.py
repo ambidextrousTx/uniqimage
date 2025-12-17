@@ -31,10 +31,12 @@ def show_duplicates(duplicates):
     canvas.configure(yscrollcommand=scrollbar.set)
 
     for group_num, (img_hash, paths) in enumerate(duplicates.items(), start=1):
-        group_frame = tk.Frame(scrollable_frame, borderwidth=2, relief="groove")
+        group_frame = tk.Frame(scrollable_frame, borderwidth=2,
+                               relief="groove")
         group_frame.pack(fill="x", padx=10, pady=10)
 
-        tk.Label(group_frame, text=f"Group {group_num}", font=("Arial", 12, "bold")).pack()
+        tk.Label(group_frame, text=f"Group {group_num}", font=("Arial", 12,
+                                                               "bold")).pack()
 
         images_frame = tk.Frame(group_frame)
         images_frame.pack()
@@ -42,7 +44,8 @@ def show_duplicates(duplicates):
         image_info = get_image_info(paths)
         for path, width, height in image_info:
             img_frame = tk.Frame(images_frame)
-            img_frame.pack(side="left", padx=5)  # side="left" puts them horizontally
+            # side="left" puts them horizontally
+            img_frame.pack(side="left", padx=5)
 
             try:
                 image = Image.open(path)
@@ -51,14 +54,20 @@ def show_duplicates(duplicates):
                 image_label = tk.Label(img_frame, image=photo)
                 image_label.image = photo
                 image_label.pack()
-                copy_btn = tk.Button(img_frame, text="Copy Path", command=lambda p=path: append_path_to_clipboard(root, p))
+                copy_btn = tk.Button(img_frame, text="Copy Path",
+                                     command=lambda p=path:
+                                     append_path_to_clipboard(root, p))
                 copy_btn.pack()
-                reveal_in_finder_btn = tk.Button(img_frame, text="Reveal in Finder", command=lambda p=path:reveal_in_finder(p))
+                reveal_in_finder_btn = tk.Button(img_frame,
+                                                 text="Reveal in Finder",
+                                                 command=lambda p=path:
+                                                 reveal_in_finder(p))
                 reveal_in_finder_btn.pack()
             except Exception as e:
                 logger.error("Could not load image", e)
 
-            info_label = tk.Label(img_frame, text=f"{path.name}\n{width}x{height}")
+            info_label = tk.Label(img_frame,
+                                  text=f"{path.name}\n{width}x{height}")
             info_label.pack()
 
     canvas.pack(side="left", fill="both", expand=True)
