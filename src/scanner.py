@@ -2,9 +2,9 @@ import argparse
 import logging
 import time
 from pathlib import Path
-from duplicatefinder import (compute_image_hashes,
-                             compute_image_hashes_concurrently,
-                             find_duplicates)
+from duplicatefindingutils import (compute_image_hashes,
+                                   compute_image_hashes_concurrently,
+                                   find_duplicates)
 from imageutils import get_image_info, show_duplicates
 from utils import is_image_file, can_scan_folder
 
