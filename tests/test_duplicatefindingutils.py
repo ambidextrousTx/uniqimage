@@ -1,4 +1,4 @@
-from duplicatefinder import find_duplicates, compute_individual_image_hash
+from duplicatefindingutils import find_duplicates, compute_individual_image_hash
 from PIL import Image
 import imagehash
 
