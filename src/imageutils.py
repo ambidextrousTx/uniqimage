@@ -3,7 +3,7 @@ import tkinter as tk
 import subprocess
 import logging
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 def append_path_to_clipboard(root, path):
@@ -64,7 +64,7 @@ def show_duplicates(duplicates):
                                                  reveal_in_finder(p))
                 reveal_in_finder_btn.pack()
             except Exception as e:
-                logger.error("Could not load image", e)
+                LOGGER.error("Could not load image", e)
 
             info_label = tk.Label(img_frame,
                                   text=f"{path.name}\n{width}x{height}")
@@ -90,6 +90,6 @@ def get_image_info(image_paths):
             width, height = extract_image_dimensions(image)
             image_info.append((image_path, width, height))
         except Exception as e:
-            logger.error("Error reading image {}: {}".format(image_path, e))
+            LOGGER.error("Error reading image {}: {}".format(image_path, e))
 
     return image_info
